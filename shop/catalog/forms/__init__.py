@@ -25,3 +25,4 @@ class ContactForm(forms.Form):
     email = forms.EmailField(label='ایمیل')
     subject = forms.CharField(max_length=200, label='موضوع')
     message = forms.CharField(widget=forms.Textarea, label='پیام')
+

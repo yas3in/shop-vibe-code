@@ -9,3 +9,4 @@ urlpatterns = [
     path('<int:pk>/edit/', front.address_edit, name='address_edit'),
     path('<int:pk>/delete/', front.address_delete, name='address_delete'),
 ]
+

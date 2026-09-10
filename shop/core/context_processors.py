@@ -14,3 +14,4 @@ def store(request):
         'all_brands': brands,
         'basket_count': basket_count,
     }
+

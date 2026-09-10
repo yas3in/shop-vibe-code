@@ -122,3 +122,4 @@ def order_detail(request, pk):
 def order_list(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_time')
     return render(request, 'orders/order_list.html', {'orders': orders})
+

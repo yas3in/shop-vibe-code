@@ -7,3 +7,4 @@ urlpatterns = [
     path('', front.home, name='home'),
     path('contact/', front.contact, name='contact'),
 ]
+

@@ -200,3 +200,4 @@ class Command(BaseCommand):
                     product.attributes.add(attr_val)
 
         self.stdout.write(self.style.SUCCESS('Successfully seeded AirShop database with demo data!'))
+

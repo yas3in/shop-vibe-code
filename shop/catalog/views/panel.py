@@ -74,3 +74,4 @@ def panel_product_delete(request, pk):
         product.delete()
         return redirect('catalog:panel_product_list')
     return render(request, 'catalog/panel/product_confirm_delete.html', {'product': product})
+

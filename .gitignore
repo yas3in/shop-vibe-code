@@ -9,3 +9,4 @@ staticfiles/
 media/
 .env
 .DS_Store
+

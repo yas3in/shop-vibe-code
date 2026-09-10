@@ -10,3 +10,4 @@ urlpatterns = [
     path('products/<int:pk>/edit/', panel.panel_product_edit, name='panel_product_edit'),
     path('products/<int:pk>/delete/', panel.panel_product_delete, name='panel_product_delete'),
 ]
+

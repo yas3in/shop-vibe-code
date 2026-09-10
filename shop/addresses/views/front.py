@@ -51,3 +51,4 @@ def address_delete(request, pk):
     if request.method == 'POST':
         address.delete()
     return redirect('addresses:address_list')
+

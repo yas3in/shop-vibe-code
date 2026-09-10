@@ -101,3 +101,4 @@ def product_detail(request, pk):
         'attributes': attributes,
         'related_products': unique_related[:8],
     })
+

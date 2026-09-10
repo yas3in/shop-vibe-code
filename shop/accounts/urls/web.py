@@ -8,3 +8,4 @@ urlpatterns = [
     path('register/', front.register_view, name='register'),
     path('logout/', front.logout_view, name='logout'),
 ]
+

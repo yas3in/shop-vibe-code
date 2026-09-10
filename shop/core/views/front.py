@@ -31,3 +31,4 @@ def contact(request):
     else:
         form = ContactForm()
     return render(request, 'core/contact.html', {'form': form, 'sent': sent})
+
