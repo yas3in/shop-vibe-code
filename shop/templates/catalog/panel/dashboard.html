@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}پنل مدیریت - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">پنل مدیریت</h2>
+        <div class="panel-nav">
+            <a href="{% url 'catalog:panel_product_list' %}" class="panel-card">
+                <div class="panel-icon">📦</div>
+                <h3>مدیریت محصولات</h3>
+            </a>
+            <a href="{% url 'orders:order_list' %}" class="panel-card">
+                <div class="panel-icon">🛍️</div>
+                <h3>سفارش‌ها</h3>
+            </a>
+            <a href="{% url 'addresses:address_list' %}" class="panel-card">
+                <div class="panel-icon">📍</div>
+                <h3>آدرس‌ها</h3>
+            </a>
+        </div>
+        {% if products %}
+        <h3 style="margin-top: 30px;">آخرین محصولات</h3>
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>عنوان</th>
+                    <th>دسته</th>
+                    <th>برند</th>
+                    <th>موجودی</th>
+                    <th>وضعیت</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr>
+                    <td>{{ p.title }}</td>
+                    <td>{{ p.category.name }}</td>
+                    <td>{{ p.brand.name }}</td>
+                    <td>{{ p.stock }}</td>
+                    <td>{% if p.is_active %}فعال{% else %}غیرفعال{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

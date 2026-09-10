@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load catalog_tags %}
+
+{% block title %}سفارش‌های من - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">سفارش‌های من</h2>
+        {% if orders %}
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>کد پیگیری</th>
+                    <th>وضعیت</th>
+                    <th>مبلغ</th>
+                    <th>تاریخ</th>
+                    <th>جزئیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.tracking_code|truncatechars:20 }}</td>
+                    <td>
+                        <span class="status-badge {% if order.status == 'paid' %}paid{% else %}pending{% endif %}">
+                            {{ order.get_status_display }}
+                        </span>
+                    </td>
+                    <td>{{ order.total_price|toman }} تومان</td>
+                    <td>{{ order.created_time }}</td>
+                    <td><a href="{% url 'orders:order_detail' order.pk %}" class="btn btn-sm">مشاهده</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-basket">
+            <p>هنوز سفارشی ثبت نکرده‌اید</p>
+            <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">مشاهده محصولات</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

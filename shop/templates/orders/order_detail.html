@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load catalog_tags %}
+
+{% block title %}جزئیات سفارش - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">جزئیات سفارش</h2>
+        <div class="order-detail-box">
+            <div class="order-header">
+                <div>
+                    <strong>کد پیگیری:</strong> {{ order.tracking_code }}
+                </div>
+                <div>
+                    <strong>وضعیت:</strong>
+                    <span class="status-badge {% if order.status == 'paid' %}paid{% else %}pending{% endif %}">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+                <div>
+                    <strong>تاریخ:</strong> {{ order.created_time }}
+                </div>
+            </div>
+            {% if order.address %}
+            <div class="order-address">
+                <h3>آدرس تحویل</h3>
+                <p>{{ order.address.receipt_name }} - {{ order.address.city }}</p>
+                <p>{{ order.address.full_address }}</p>
+                <p>تلفن: {{ order.address.phone_number }}</p>
+            </div>
+            {% endif %}
+            <table class="order-lines">
+                <thead>
+                    <tr>
+                        <th>محصول</th>
+                        <th>قیمت واحد</th>
+                        <th>تعداد</th>
+                        <th>قیمت کل</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in lines %}
+                    <tr>
+                        <td>{{ line.product_title }}</td>
+                        <td>{{ line.price|toman }} تومان</td>
+                        <td>{{ line.quantity }}</td>
+                        <td>{{ line.line_total|toman }} تومان</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="order-total">
+                <strong>جمع کل: {{ order.total_price|toman }} تومان</strong>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

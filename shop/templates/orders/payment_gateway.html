@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load catalog_tags %}
+
+{% block title %}درگاه پرداخت - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="payment-gateway">
+            <h2>درگاه پرداخت بانکی (فیک)</h2>
+            <div class="gateway-box">
+                <div class="order-summary">
+                    <p>شماره سفارش: {{ order.tracking_code }}</p>
+                    <p>مبلغ قابل پرداخت: <strong>{{ order.total_price|toman }} تومان</strong></p>
+                </div>
+                <form method="post" action="{% url 'orders:payment_callback' order.pk %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>شماره کارت</label>
+                        <input type="text" placeholder="xxxx-xxxx-xxxx-xxxx" value="6037-9975-1234-5678">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>CVV2</label>
+                            <input type="text" placeholder="xxx" value="123">
+                        </div>
+                        <div class="form-group">
+                            <label>تاریخ انقضا</label>
+                            <input type="text" placeholder="MM/YY" value="06/07">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>رمز دوم</label>
+                        <input type="password" placeholder="رمز پویا" value="12345">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">پرداخت</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

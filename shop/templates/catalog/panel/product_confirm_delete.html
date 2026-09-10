@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}حذف محصول - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="form-container">
+            <h2>حذف محصول</h2>
+            <p>آیا از حذف محصول <strong>{{ product.title }}</strong> اطمینان دارید؟</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="checkout-actions">
+                    <button type="submit" class="btn btn-danger">بله، حذف شود</button>
+                    <a href="{% url 'catalog:panel_product_list' %}" class="btn btn-secondary">انصراف</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

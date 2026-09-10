@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if editing %}ویرایش محصول{% else %}افزودن محصول{% endif %} - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="form-container wide">
+            <h2>{% if editing %}ویرایش محصول{% else %}افزودن محصول جدید{% endif %}</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3>اطلاعات محصول</h3>
+                {% for field in form %}
+                <div class="form-group">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <span class="error">{{ field.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <h3>قیمت و تخفیف</h3>
+                {% for field in price_form %}
+                <div class="form-group">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <span class="error">{{ field.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="form-group">
+                    <label>تصاویر گالری (اختیاری)</label>
+                    <input type="file" name="gallery" multiple>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">{% if editing %}بروزرسانی{% else %}ذخیره{% endif %}</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

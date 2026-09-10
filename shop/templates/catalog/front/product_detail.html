@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load catalog_tags %}
+
+{% block title %}{{ product.title }} - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="product-detail">
+            <div class="product-gallery">
+                {% if product.base_image %}
+                <img src="{{ product.base_image.url }}" alt="{{ product.title }}" class="main-image">
+                {% else %}
+                <div class="no-image large">بدون تصویر</div>
+                {% endif %}
+                {% if images %}
+                <div class="gallery-thumbs">
+                    {% for img in images %}
+                    <img src="{{ img.image.url }}" alt="{{ product.title }}">
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="product-detail-info">
+                <h1>{{ product.title }}</h1>
+                <p class="brand-name">برند: {{ product.brand.name }}</p>
+                <p class="category-name">دسته: {{ product.category.name }}</p>
+                {% if product.final_price %}
+                <div class="price-box large">
+                    {% if product.discount_percent > 0 %}
+                    <span class="old-price">{{ product.price.price|toman }} تومان</span>
+                    <span class="discount-badge">{{ product.discount_percent }}% تخفیف</span>
+                    {% endif %}
+                    <span class="price large">{{ product.final_price|toman }} تومان</span>
+                </div>
+                {% endif %}
+                <p class="stock">موجودی: {% if product.stock > 0 %}{{ product.stock }} عدد{% else %}ناموجود{% endif %}</p>
+                <div class="description">
+                    <h3>توضیحات</h3>
+                    <p>{{ product.description }}</p>
+                </div>
+                {% if attributes %}
+                <div class="attributes">
+                    <h3>ویژگی‌ها</h3>
+                    <table>
+                        {% for attr in attributes %}
+                        <tr>
+                            <td>{{ attr.product_attribute.name }}</td>
+                            <td>{{ attr.value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endif %}
+                {% if product.stock > 0 %}
+                <a href="{% url 'orders:basket_add' product.pk %}?next={% url 'catalog:product_detail' product.pk %}" class="btn btn-primary btn-lg">افزودن به سبد خرید</a>
+                {% else %}
+                <button class="btn btn-disabled btn-lg" disabled>ناموجود</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if related_products %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">محصولات مرتبط</h2>
+        <div class="product-grid">
+            {% for product in related_products %}
+            <div class="product-card">
+                {% if product.base_image %}
+                <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
+                {% else %}
+                <div class="no-image">بدون تصویر</div>
+                {% endif %}
+                {% if product.discount_percent > 0 %}
+                <span class="discount-badge">{{ product.discount_percent }}%</span>
+                {% endif %}
+                <div class="product-info">
+                    <h3>{{ product.title }}</h3>
+                    <p class="brand">{{ product.brand.name }}</p>
+                    {% if product.final_price %}
+                    <div class="price-box">
+                        {% if product.discount_percent > 0 %}
+                        <span class="old-price">{{ product.price.price|toman }} تومان</span>
+                        {% endif %}
+                        <span class="price">{{ product.final_price|toman }} تومان</span>
+                    </div>
+                    {% endif %}
+                    <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

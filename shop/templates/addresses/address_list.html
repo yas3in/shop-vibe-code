@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}آدرس‌های من - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">آدرس‌های من</h2>
+        <a href="{% url 'addresses:address_create' %}" class="btn btn-primary" style="margin-bottom: 20px; display: inline-block;">افزودن آدرس جدید</a>
+        {% if addresses %}
+        <div class="address-list">
+            {% for addr in addresses %}
+            <div class="address-card-box">
+                <div class="address-info">
+                    <strong>{{ addr.receipt_name }}</strong>
+                    {% if addr.is_default %}<span class="default-badge">پیش‌فرض</span>{% endif %}
+                    <p>{{ addr.city }} - {{ addr.full_address }}</p>
+                    <p>تلفن: {{ addr.phone_number }} | کد پستی: {{ addr.postal_code }}</p>
+                </div>
+                <div class="address-actions">
+                    <a href="{% url 'addresses:address_edit' addr.pk %}" class="btn btn-sm">ویرایش</a>
+                    <form method="post" action="{% url 'addresses:address_delete' addr.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>هنوز آدرسی ثبت نکرده‌اید.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

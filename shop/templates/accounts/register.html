@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}ثبت‌نام - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="auth-form">
+            <h2>ثبت‌نام</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <span class="error">{{ field.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-block">ثبت‌نام</button>
+            </form>
+            <p class="auth-link">حساب دارید؟ <a href="{% url 'accounts:login' %}">وارد شوید</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}

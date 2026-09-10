@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load catalog_tags %}
+
+{% block title %}AirShop - فروشگاه ایرپاد{% endblock %}
+
+{% block content %}
+<section class="banner">
+    <div class="container">
+        <div class="banner-content">
+            <h1>بهترین ایرپادها را از ما بخرید</h1>
+            <p>کیفیت صدای بی‌نظیر با قیمت مناسب</p>
+            <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">مشاهده محصولات</a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">محصولات پرفروش</h2>
+        <div class="product-grid">
+            {% for product in top_selling %}
+            <div class="product-card">
+                {% if product.base_image %}
+                <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
+                {% else %}
+                <div class="no-image">بدون تصویر</div>
+                {% endif %}
+                {% if product.discount_percent > 0 %}
+                <span class="discount-badge">{{ product.discount_percent }}%</span>
+                {% endif %}
+                <div class="product-info">
+                    <h3>{{ product.title }}</h3>
+                    <p class="brand">{{ product.brand.name }}</p>
+                    {% if product.final_price %}
+                    <div class="price-box">
+                        {% if product.discount_percent > 0 %}
+                        <span class="old-price">{{ product.price.price|toman }} تومان</span>
+                        {% endif %}
+                        <span class="price">{{ product.final_price|toman }} تومان</span>
+                    </div>
+                    {% endif %}
+                    <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty-msg">محصولی یافت نشد</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section brands-section">
+    <div class="container">
+        <h2 class="section-title">برندها</h2>
+        <div class="brands-grid">
+            {% for brand in brands %}
+            <a href="{% url 'catalog:product_list' %}?brand={{ brand.pk }}" class="brand-item">
+                {% if brand.logo %}
+                <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
+                {% else %}
+                <span>{{ brand.name }}</span>
+                {% endif %}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">بیشترین تخفیف</h2>
+        <div class="product-grid">
+            {% for product in most_discounted %}
+            <div class="product-card">
+                {% if product.base_image %}
+                <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
+                {% else %}
+                <div class="no-image">بدون تصویر</div>
+                {% endif %}
+                {% if product.discount_percent > 0 %}
+                <span class="discount-badge">{{ product.discount_percent }}%</span>
+                {% endif %}
+                <div class="product-info">
+                    <h3>{{ product.title }}</h3>
+                    <p class="brand">{{ product.brand.name }}</p>
+                    {% if product.final_price %}
+                    <div class="price-box">
+                        {% if product.discount_percent > 0 %}
+                        <span class="old-price">{{ product.price.price|toman }} تومان</span>
+                        {% endif %}
+                        <span class="price">{{ product.final_price|toman }} تومان</span>
+                    </div>
+                    {% endif %}
+                    <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty-msg">محصولی یافت نشد</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="about-banner">
+    <div class="container">
+        <h2>درباره AirShop</h2>
+        <p>ما در ایرشاپ بهترین ایرپادها و هدفون‌های بی‌سیم را با گارانتی اصالت و قیمت مناسب ارائه می‌دهیم. تجربه خریدی آسان و مطمئن با ارسال سریع به سراسر ایران.</p>
+    </div>
+</section>
+
+<section class="section services-section">
+    <div class="container">
+        <h2 class="section-title">خدمات ما</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🚚</div>
+                <h3>ارسال سریع</h3>
+                <p>ارسال به سراسر ایران</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">✅</div>
+                <h3>ضمانت اصالت</h3>
+                <p>تمامی محصولات اورجینال</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔄</div>
+                <h3>۷ روز مرجوعی</h3>
+                <p>امکان مرجوع تا ۷ روز</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📞</div>
+                <h3>پشتیبانی</h3>
+                <p>پشتیبانی ۲۴ ساعته</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

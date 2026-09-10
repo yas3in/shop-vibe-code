@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}ویرایش آدرس{% else %}افزودن آدرس{% endif %} - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="form-container">
+            <h2>{% if form.instance.pk %}ویرایش آدرس{% else %}افزودن آدرس جدید{% endif %}</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <span class="error">{{ field.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-block">ذخیره</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

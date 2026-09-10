@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}تماس با ما - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">تماس با ما</h2>
+        {% if sent %}
+        <div class="alert alert-success">پیام شما با موفقیت ارسال شد.</div>
+        {% endif %}
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">ارسال پیام</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

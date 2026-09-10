@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load catalog_tags %}
+
+{% block title %}انتخاب آدرس - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">انتخاب آدرس</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if addresses %}
+            <div class="address-list">
+                {% for addr in addresses %}
+                <label class="address-card">
+                    <input type="radio" name="address_id" value="{{ addr.pk }}" {% if addr.is_default %}checked{% endif %}>
+                    <div class="address-info">
+                        <strong>{{ addr.receipt_name }}</strong>
+                        <p>{{ addr.city }} - {{ addr.full_address }}</p>
+                        <p>تلفن: {{ addr.phone_number }} | کد پستی: {{ addr.postal_code }}</p>
+                        {% if addr.address_detail %}
+                        <p>جزئیات: {{ addr.address_detail }}</p>
+                        {% endif %}
+                    </div>
+                </label>
+                {% endfor %}
+            </div>
+            <div class="checkout-actions">
+                <button type="submit" class="btn btn-primary btn-lg">ادامه و پرداخت</button>
+                <a href="{% url 'addresses:address_create' %}?next={% url 'orders:checkout_address' %}" class="btn btn-secondary">افزودن آدرس جدید</a>
+            </div>
+            {% else %}
+            <div class="empty-basket">
+                <p>هنوز آدرسی ثبت نکرده‌اید</p>
+                <a href="{% url 'addresses:address_create' %}?next={% url 'orders:checkout_address' %}" class="btn btn-primary">افزودن آدرس</a>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</section>
+{% endblock %}

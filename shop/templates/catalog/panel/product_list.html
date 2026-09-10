@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load catalog_tags %}
+
+{% block title %}مدیریت محصولات - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="panel-header">
+            <h2 class="section-title">مدیریت محصولات</h2>
+            <a href="{% url 'catalog:panel_product_create' %}" class="btn btn-primary">افزودن محصول جدید</a>
+        </div>
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>تصویر</th>
+                    <th>عنوان</th>
+                    <th>دسته</th>
+                    <th>برند</th>
+                    <th>قیمت</th>
+                    <th>موجودی</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr>
+                    <td>
+                        {% if p.base_image %}
+                        <img src="{{ p.base_image.url }}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;">
+                        {% endif %}
+                    </td>
+                    <td>{{ p.title }}</td>
+                    <td>{{ p.category.name }}</td>
+                    <td>{{ p.brand.name }}</td>
+                    <td>{% if p.final_price %}{{ p.final_price|toman }}{% else %}-{% endif %}</td>
+                    <td>{{ p.stock }}</td>
+                    <td>{% if p.is_active %}فعال{% else %}غیرفعال{% endif %}</td>
+                    <td>
+                        <a href="{% url 'catalog:panel_product_edit' p.pk %}" class="btn btn-sm">ویرایش</a>
+                        <a href="{% url 'catalog:panel_product_delete' p.pk %}" class="btn btn-sm btn-danger">حذف</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8">محصولی یافت نشد</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

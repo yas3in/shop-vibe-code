@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}ورود - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="auth-form">
+            <h2>ورود به حساب</h2>
+            {% if form.errors %}
+            <div class="alert alert-error">نام کاربری یا رمز عبور اشتباه است.</div>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <span class="error">{{ field.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-block">ورود</button>
+            </form>
+            <p class="auth-link">حساب ندارید؟ <a href="{% url 'accounts:register' %}">ثبت‌نام کنید</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}

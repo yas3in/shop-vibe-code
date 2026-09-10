@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load catalog_tags %}
+
+{% block title %}محصولات - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container product-list-page">
+        <div class="sidebar">
+            <h3>فیلتر</h3>
+            <form method="get" action="{% url 'catalog:product_list' %}">
+                <div class="filter-group">
+                    <label>دسته‌بندی</label>
+                    <select name="category">
+                        <option value="">همه</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat.pk }}" {% if current_category == cat.pk|stringformat:"d" %}selected{% endif %}>{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>برند</label>
+                    <select name="brand">
+                        <option value="">همه</option>
+                        {% for b in brands %}
+                        <option value="{{ b.pk }}" {% if current_brand == b.pk|stringformat:"d" %}selected{% endif %}>{{ b.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>حداقل قیمت</label>
+                    <input type="number" name="min_price" value="{{ min_price }}" placeholder="تومان">
+                </div>
+                <div class="filter-group">
+                    <label>حداکثر قیمت</label>
+                    <input type="number" name="max_price" value="{{ max_price }}" placeholder="تومان">
+                </div>
+                <div class="filter-group">
+                    <label>مرتب‌سازی</label>
+                    <select name="sort">
+                        <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>جدیدترین</option>
+                        <option value="cheapest" {% if current_sort == 'cheapest' %}selected{% endif %}>ارزان‌ترین</option>
+                        <option value="expensive" {% if current_sort == 'expensive' %}selected{% endif %}>گران‌ترین</option>
+                        <option value="bestselling" {% if current_sort == 'bestselling' %}selected{% endif %}>پرفروش‌ترین</option>
+                        <option value="discount" {% if current_sort == 'discount' %}selected{% endif %}>بیشترین تخفیف</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">اعمال فیلتر</button>
+            </form>
+        </div>
+        <div class="products-area">
+            <div class="product-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    {% if product.base_image %}
+                    <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
+                    {% else %}
+                    <div class="no-image">بدون تصویر</div>
+                    {% endif %}
+                    {% if product.discount_percent > 0 %}
+                    <span class="discount-badge">{{ product.discount_percent }}%</span>
+                    {% endif %}
+                    <div class="product-info">
+                        <h3>{{ product.title }}</h3>
+                        <p class="brand">{{ product.brand.name }}</p>
+                        {% if product.final_price %}
+                        <div class="price-box">
+                            {% if product.discount_percent > 0 %}
+                            <span class="old-price">{{ product.price.price|toman }} تومان</span>
+                            {% endif %}
+                            <span class="price">{{ product.final_price|toman }} تومان</span>
+                        </div>
+                        {% endif %}
+                        <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="empty-msg">محصولی یافت نشد</p>
+                {% endfor %}
+            </div>
+            {% if products.has_other_pages %}
+            <div class="pagination">
+                {% if products.has_previous %}
+                <a href="?page={{ products.previous_page_number }}&category={{ current_category|default:'' }}&brand={{ current_brand|default:'' }}&sort={{ current_sort }}&min_price={{ min_price }}&max_price={{ max_price }}">قبلی</a>
+                {% endif %}
+                {% for num in products.paginator.page_range %}
+                <a href="?page={{ num }}&category={{ current_category|default:'' }}&brand={{ current_brand|default:'' }}&sort={{ current_sort }}&min_price={{ min_price }}&max_price={{ max_price }}" class="{% if products.number == num %}active{% endif %}">{{ num }}</a>
+                {% endfor %}
+                {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}&category={{ current_category|default:'' }}&brand={{ current_brand|default:'' }}&sort={{ current_sort }}&min_price={{ min_price }}&max_price={{ max_price }}">بعدی</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
