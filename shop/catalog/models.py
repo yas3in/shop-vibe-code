@@ -52,13 +52,14 @@ class ProductAttribute(models.Model):
 
 
 class ProductAttributeValue(models.Model):
+    product = models.ForeignKey("Product", on_delete=models.CASCADE, related_name="attribute_values")
     product_attribute = models.ForeignKey(
         ProductAttribute, on_delete=models.CASCADE, related_name="values"
     )
     value = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.value
+        return f"{self.product} - {self.product_attribute.name}: {self.value}"
 
 
 class ProductPrice(models.Model):
@@ -82,7 +83,6 @@ class Product(models.Model):
     product_type = models.ForeignKey(
         ProductType, on_delete=models.PROTECT, related_name="products"
     )
-    attributes = models.ManyToManyField(ProductAttributeValue, related_name="products", blank=True)
     stock = models.PositiveIntegerField(default=0)
     sold_count = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)

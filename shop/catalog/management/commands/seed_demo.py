@@ -63,13 +63,9 @@ class Command(BaseCommand):
             ("ضد آب", ["IPX4", "IPX5", "ندارد"]),
         ]
         attrs = {}
-        for attr_name, values in attr_specs:
+        for attr_name, _ in attr_specs:
             attribute, _ = ProductAttribute.objects.get_or_create(product_type=ptype, name=attr_name)
-            value_objs = []
-            for v in values:
-                value_obj, _ = ProductAttributeValue.objects.get_or_create(product_attribute=attribute, value=v)
-                value_objs.append(value_obj)
-            attrs[attr_name] = value_objs
+            attrs[attr_name] = attribute
 
         for title, brand_name, cat_name, price, discount in PRODUCTS:
             product, created = Product.objects.get_or_create(
@@ -85,11 +81,15 @@ class Command(BaseCommand):
                 },
             )
             if created:
-                for value_objs in attrs.values():
-                    product.attributes.add(random.choice(value_objs))
                 product.price = ProductPrice.objects.create(
                     product=product, price=price, discount_percent=discount
                 )
+            if not product.attribute_values.exists():
+                for attr_name, values in attr_specs:
+                    for v in random.sample(values, random.randint(1, 2)):
+                        ProductAttributeValue.objects.create(
+                            product=product, product_attribute=attrs[attr_name], value=v
+                        )
 
         if not User.objects.filter(username="admin").exists():
             User.objects.create_superuser("admin", "admin@airshop.ir", "admin123")

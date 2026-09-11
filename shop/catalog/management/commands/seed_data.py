@@ -65,14 +65,16 @@ class Command(BaseCommand):
         attr_battery, _ = ProductAttribute.objects.get_or_create(product_type=ptype, name='شارژدهی باتری')
         attr_water, _ = ProductAttribute.objects.get_or_create(product_type=ptype, name='مقاومت در برابر آب')
 
-        val_anc_yes, _ = ProductAttributeValue.objects.get_or_create(product_attribute=attr_anc, value='دارد (فعال)')
-        val_anc_no, _ = ProductAttributeValue.objects.get_or_create(product_attribute=attr_anc, value='ندارد')
-        val_bt53, _ = ProductAttributeValue.objects.get_or_create(product_attribute=attr_bt, value='Bluetooth 5.3')
-        val_bt52, _ = ProductAttributeValue.objects.get_or_create(product_attribute=attr_bt, value='Bluetooth 5.2')
-        val_bat30, _ = ProductAttributeValue.objects.get_or_create(product_attribute=attr_battery, value='تا ۳۰ ساعت همراه با کیس')
-        val_bat24, _ = ProductAttributeValue.objects.get_or_create(product_attribute=attr_battery, value='تا ۲۴ ساعت همراه با کیس')
-        val_ipx4, _ = ProductAttributeValue.objects.get_or_create(product_attribute=attr_water, value='IPX4')
-        val_ipx7, _ = ProductAttributeValue.objects.get_or_create(product_attribute=attr_water, value='IPX7')
+        val_specs = {
+            'anc_yes': (attr_anc, 'دارد (فعال)'),
+            'anc_no': (attr_anc, 'ندارد'),
+            'bt53': (attr_bt, 'Bluetooth 5.3'),
+            'bt52': (attr_bt, 'Bluetooth 5.2'),
+            'bat30': (attr_battery, 'تا ۳۰ ساعت همراه با کیس'),
+            'bat24': (attr_battery, 'تا ۲۴ ساعت همراه با کیس'),
+            'ipx4': (attr_water, 'IPX4'),
+            'ipx7': (attr_water, 'IPX7'),
+        }
 
         products_data = [
             {
@@ -85,7 +87,7 @@ class Command(BaseCommand):
                 'sold': 85,
                 'desc': 'نسل دوم ایرپاد پرو با چیپست قدرتمند H2، نویز کنسلینگ فعال تا ۲ برابر قوی‌تر و شارژدهی تا ۳۰ ساعت با کیس شارژ مجهز به درگاه USB-C.',
                 'color': (94, 49, 34),
-                'attrs': [val_anc_yes, val_bt53, val_bat30, val_ipx4]
+                'attrs': [val_specs['anc_yes'], val_specs['bt53'], val_specs['bat30'], val_specs['ipx4']]
             },
             {
                 'title': 'اپل ایرپاد مکس (Apple AirPods Max)',
@@ -97,7 +99,7 @@ class Command(BaseCommand):
                 'sold': 32,
                 'desc': 'هدفون روگوشی بی‌نظیر اپل با کیفیت صدای های‌فای، درایورهای داینامیک اختصاصی و نویز کنسلینگ پیشرفته برای تجربه صوتی سینمایی.',
                 'color': (45, 30, 25),
-                'attrs': [val_anc_yes, val_bt52, val_bat24, val_ipx4]
+                'attrs': [val_specs['anc_yes'], val_specs['bt52'], val_specs['bat24'], val_specs['ipx4']]
             },
             {
                 'title': 'اپل ایرپاد ۳ (Apple AirPods 3rd Gen)',
@@ -109,7 +111,7 @@ class Command(BaseCommand):
                 'sold': 95,
                 'desc': 'طراحی جدید و ارگونومیک با پشتیبانی از Spatial Audio و رهگیری پویای حرکات سر همراه با مقاومت در برابر تعریق و قطرات آب.',
                 'color': (70, 40, 30),
-                'attrs': [val_anc_no, val_bt53, val_bat30, val_ipx4]
+                'attrs': [val_specs['anc_no'], val_specs['bt53'], val_specs['bat30'], val_specs['ipx4']]
             },
             {
                 'title': 'سامسونگ گلکسی بادز ۲ پرو (Samsung Galaxy Buds 2 Pro)',
@@ -121,7 +123,7 @@ class Command(BaseCommand):
                 'sold': 64,
                 'desc': 'صدای با کیفیت ۲۴ بیتی Hi-Fi، طراحی کوچک‌تر و راحت‌تر، و حذف نویز فعال هوشمند برای مکالمات شفاف و موسیقی زنده.',
                 'color': (30, 50, 40),
-                'attrs': [val_anc_yes, val_bt53, val_bat24, val_ipx7]
+                'attrs': [val_specs['anc_yes'], val_specs['bt53'], val_specs['bat24'], val_specs['ipx7']]
             },
             {
                 'title': 'سونی WF-1000XM5 (Sony WF-1000XM5 Wireless Earbuds)',
@@ -133,7 +135,7 @@ class Command(BaseCommand):
                 'sold': 47,
                 'desc': 'بهترین سیستم حذف نویز جهان با دو پردازنده اختصاصی، کیفیت صدای ممتاز و میکروفون‌های هدایت صوتی استخوان برای بالاترین کیفیت مکالمه.',
                 'color': (25, 45, 35),
-                'attrs': [val_anc_yes, val_bt53, val_bat24, val_ipx4]
+                'attrs': [val_specs['anc_yes'], val_specs['bt53'], val_specs['bat24'], val_specs['ipx4']]
             },
             {
                 'title': 'انکر ساندکور لیبرتی ۴ (Anker Soundcore Liberty 4 NC)',
@@ -145,7 +147,7 @@ class Command(BaseCommand):
                 'sold': 120,
                 'desc': 'کاهش نویز تا ۹۸.۵ درصد، درایورهای کاستوم ۱۱ میلی‌متری و گواهی صوتی Hi-Res Wireless با عمر باتری فوق‌العاده تا ۵۰ ساعت.',
                 'color': (80, 45, 35),
-                'attrs': [val_anc_yes, val_bt53, val_bat30, val_ipx4]
+                'attrs': [val_specs['anc_yes'], val_specs['bt53'], val_specs['bat30'], val_specs['ipx4']]
             },
             {
                 'title': 'جی‌بی‌ال Tune 230NC TWS (JBL Tune 230NC)',
@@ -157,7 +159,7 @@ class Command(BaseCommand):
                 'sold': 58,
                 'desc': 'بیس خالص JBL Pure Bass Sound با ۴ میکروفون برای مکالمه بدون نویز و باتری با شارژدهی تا ۴۰ ساعت.',
                 'color': (60, 35, 25),
-                'attrs': [val_anc_yes, val_bt52, val_bat30, val_ipx4]
+                'attrs': [val_specs['anc_yes'], val_specs['bt52'], val_specs['bat30'], val_specs['ipx4']]
             },
             {
                 'title': 'سامسونگ گلکسی بادز اف‌ای (Samsung Galaxy Buds FE)',
@@ -169,7 +171,7 @@ class Command(BaseCommand):
                 'sold': 72,
                 'desc': 'طراحی جمع‌وجور و سبک با بالشتک‌های سیلیکونی، نویز کنسلینگ فعال کارآمد و ارگونومی فوق‌العاده برای استفاده روزمره.',
                 'color': (40, 55, 45),
-                'attrs': [val_anc_yes, val_bt52, val_bat30, val_ipx4]
+                'attrs': [val_specs['anc_yes'], val_specs['bt52'], val_specs['bat30'], val_specs['ipx4']]
             }
         ]
 
@@ -196,8 +198,12 @@ class Command(BaseCommand):
                     discount_percent=p_data['discount']
                 )
 
-                for attr_val in p_data['attrs']:
-                    product.attributes.add(attr_val)
+                for attribute, value in p_data['attrs']:
+                    ProductAttributeValue.objects.create(
+                        product=product,
+                        product_attribute=attribute,
+                        value=value,
+                    )
 
         self.stdout.write(self.style.SUCCESS('Successfully seeded AirShop database with demo data!'))
 

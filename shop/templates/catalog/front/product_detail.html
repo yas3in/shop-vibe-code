@@ -43,10 +43,10 @@
                 <div class="attributes">
                     <h3>ویژگی‌ها</h3>
                     <table>
-                        {% for attr in attributes %}
+                        {% for attr_name, attr_values in attributes.items %}
                         <tr>
-                            <td>{{ attr.product_attribute.name }}</td>
-                            <td>{{ attr.value }}</td>
+                            <td>{{ attr_name }}</td>
+                            <td>{{ attr_values|join:"، " }}</td>
                         </tr>
                         {% endfor %}
                     </table>

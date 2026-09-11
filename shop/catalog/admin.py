@@ -34,9 +34,9 @@ class ProductAttributeAdmin(admin.ModelAdmin):
 
 @admin.register(ProductAttributeValue)
 class ProductAttributeValueAdmin(admin.ModelAdmin):
-    list_display = ["value", "product_attribute"]
+    list_display = ["product", "product_attribute", "value"]
     list_filter = ["product_attribute__product_type"]
-    search_fields = ["value"]
+    search_fields = ["value", "product__title"]
 
 
 class ProductImageInline(admin.TabularInline):
@@ -49,13 +49,27 @@ class ProductPriceInline(admin.StackedInline):
     max_num = 1
 
 
+class ProductAttributeValueInline(admin.TabularInline):
+    model = ProductAttributeValue
+    extra = 2
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "product_attribute":
+            match = request.resolver_match
+            object_id = match.kwargs.get("object_id") if match else None
+            if object_id:
+                product = Product.objects.filter(pk=object_id).select_related("product_type").first()
+                if product:
+                    kwargs["queryset"] = ProductAttribute.objects.filter(product_type=product.product_type)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ["title", "category", "brand", "stock", "sold_count", "is_active"]
     list_filter = ["is_active", "category", "brand"]
     search_fields = ["title"]
-    inlines = [ProductPriceInline, ProductImageInline]
-    filter_horizontal = ["attributes"]
+    inlines = [ProductPriceInline, ProductImageInline, ProductAttributeValueInline]
 
 
 @admin.register(ProductPrice)

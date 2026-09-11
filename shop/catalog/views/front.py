@@ -64,7 +64,9 @@ def product_detail(request, pk):
         pk=pk, is_active=True
     )
     images = product.images.all()
-    attributes = product.attributes.select_related('product_attribute').all()
+    attributes = {}
+    for attribute_value in product.attribute_values.select_related('product_attribute'):
+        attributes.setdefault(attribute_value.product_attribute.name, []).append(attribute_value.value)
 
     related = Product.objects.filter(
         is_active=True
