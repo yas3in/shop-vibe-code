@@ -1,62 +1,79 @@
 import uuid
+
+from django.conf import settings
 from django.db import models
 
 
 class Order(models.Model):
-    PENDING = 'pending'
-    PAID = 'paid'
-    CANCELLED = 'cancelled'
-    STATUS_CHOICES = [
-        (PENDING, 'در انتظار پرداخت'),
-        (PAID, 'پرداخت شده'),
-        (CANCELLED, 'لغو شده'),
+    STATUS_CHOICE = [
+        ("pending", "در انتظار پرداخت"),
+        ("paid", "پرداخت شده"),
+        ("canceled", "لغو شده"),
     ]
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='orders')
-    address = models.ForeignKey('addresses.Address', on_delete=models.SET_NULL, null=True)
-    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=PENDING)
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
+    )
+    ref_id = models.CharField(max_length=20, unique=True, editable=False)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICE, default="pending", db_index=True)
+    receipt_name = models.CharField(max_length=120)
+    phone_number = models.CharField(max_length=11)
+    city = models.CharField(max_length=80)
+    postal_code = models.CharField(max_length=10)
+    full_address = models.TextField()
+    address_detail = models.CharField(max_length=150, blank=True)
     total_price = models.PositiveIntegerField(default=0)
-    tracking_code = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     created_time = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'سفارش'
-        verbose_name_plural = 'سفارش‌ها'
-        ordering = ['-created_time']
+    updated_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'سفارش {self.tracking_code}'
+        return f"سفارش {self.ref_id} - {self.user}"
 
-
-class OrderLine(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='lines')
-    product = models.ForeignKey('catalog.Product', on_delete=models.SET_NULL, null=True)
-    product_title = models.CharField(max_length=200)
-    quantity = models.PositiveIntegerField(default=1)
-    price = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        verbose_name = 'آیتم سفارش'
-        verbose_name_plural = 'آیتم‌های سفارش'
-
-    def __str__(self):
-        return f'{self.product_title} x {self.quantity}'
+    def save(self, *args, **kwargs):
+        if not self.ref_id:
+            self.ref_id = uuid.uuid4().hex[:10].upper()
+        super().save(*args, **kwargs)
 
     @property
-    def line_total(self):
-        return self.price * self.quantity
+    def total_quantity(self):
+        return sum(item.quantity for item in self.items.all())
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey(
+        "catalog.Product", on_delete=models.SET_NULL, null=True, blank=True,
+        related_name="order_items",
+    )
+    product_title = models.CharField(max_length=200)
+    unit_price = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.product_title} - {self.quantity}"
+
+    @property
+    def total_price(self):
+        return self.unit_price * self.quantity
 
 
 class Payment(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='payment')
-    amount = models.PositiveIntegerField(default=0)
-    transaction_id = models.CharField(max_length=100, blank=True)
-    is_paid = models.BooleanField(default=False)
-    paid_time = models.DateTimeField(null=True, blank=True)
+    STATUS_CHOICE = [
+        ("pending", "در انتظار نتیجه"),
+        ("success", "موفق"),
+        ("failed", "ناموفق"),
+    ]
+
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="payments")
+    amount = models.PositiveIntegerField()
+    ref_id = models.CharField(max_length=40, unique=True, editable=False)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICE, default="pending")
     created_time = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        verbose_name = 'پرداخت'
-        verbose_name_plural = 'پرداخت‌ها'
-
     def __str__(self):
-        return f'پرداخت سفارش {self.order.tracking_code}'
+        return f"پرداخت {self.ref_id} - {self.get_status_display()}"
+
+    def save(self, *args, **kwargs):
+        if not self.ref_id:
+            self.ref_id = uuid.uuid4().hex[:14].upper()
+        super().save(*args, **kwargs)
