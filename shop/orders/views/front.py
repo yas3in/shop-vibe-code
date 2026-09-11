@@ -8,7 +8,7 @@ from orders.models import Order, OrderItem, Payment
 
 
 def get_active_basket(user):
-    basket, _ = Basket.objects.get_or_create(user=user, status=Basket.Status.PENDING)
+    basket, _ = Basket.objects.get_or_create(user=user, status="pending")
     return basket
 
 
@@ -35,7 +35,7 @@ def basket_add(request, product_id):
 
 @login_required
 def basket_remove(request, product_id):
-    basket = Basket.objects.filter(user=request.user, status=Basket.Status.PENDING).first()
+    basket = Basket.objects.filter(user=request.user, status="pending").first()
     if basket:
         BasketLine.objects.filter(basket=basket, product_id=product_id).delete()
     return redirect("basket")
@@ -48,7 +48,7 @@ def basket_update(request, product_id):
             quantity = int(request.POST.get("quantity", 1))
         except (TypeError, ValueError):
             quantity = 1
-        basket = Basket.objects.filter(user=request.user, status=Basket.Status.PENDING).first()
+        basket = Basket.objects.filter(user=request.user, status="pending").first()
         if basket:
             line = BasketLine.objects.filter(basket=basket, product_id=product_id).first()
             if line:
@@ -62,7 +62,7 @@ def basket_update(request, product_id):
 
 @login_required
 def checkout_address(request):
-    basket = Basket.objects.filter(user=request.user, status=Basket.Status.PENDING).first()
+    basket = Basket.objects.filter(user=request.user, status="pending").first()
     if not basket or not basket.lines.exists():
         return redirect("basket")
     addresses = Address.objects.filter(user=request.user)
@@ -90,7 +90,7 @@ def checkout_address(request):
                     quantity=line.quantity,
                 )
             Payment.objects.create(order=order, amount=order.total_price)
-            basket.status = Basket.Status.EXPIRED
+            basket.status = "expired"
             basket.save()
             return redirect("payment_gateway", order_id=order.pk)
         else:
@@ -104,7 +104,7 @@ def checkout_address(request):
 
 @login_required
 def payment_gateway(request, order_id):
-    order = get_object_or_404(Order, pk=order_id, user=request.user, status=Order.Status.PENDING)
+    order = get_object_or_404(Order, pk=order_id, user=request.user, status="pending")
     if request.method == "POST":
         form = FakePaymentForm(request.POST)
         if form.is_valid():
@@ -118,11 +118,11 @@ def payment_gateway(request, order_id):
 def payment_callback(request, order_id):
     order = get_object_or_404(Order, pk=order_id, user=request.user)
     payment = order.payments.order_by("-created_time").first()
-    if order.status == Order.Status.PENDING and request.method == "POST":
-        order.status = Order.Status.PAID
+    if order.status == "pending" and request.method == "POST":
+        order.status = "paid"
         order.save()
         if payment:
-            payment.status = Payment.Status.SUCCESS
+            payment.status = "success"
             payment.save()
         for item in order.items.select_related("product"):
             if item.product:
