@@ -21,7 +21,7 @@
             <tbody>
                 {% for order in orders %}
                 <tr>
-                    <td>{{ order.tracking_code|truncatechars:20 }}</td>
+                    <td>{{ order.ref_id|truncatechars:20 }}</td>
                     <td>
                         <span class="status-badge {% if order.status == 'paid' %}paid{% else %}pending{% endif %}">
                             {{ order.get_status_display }}

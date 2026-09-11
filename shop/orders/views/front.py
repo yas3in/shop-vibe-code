@@ -1,125 +1,146 @@
-import uuid
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from catalog.models import Basket, BasketLine, Product
-from orders.models import Order, OrderLine, Payment
+from django.shortcuts import get_object_or_404, redirect, render
+
 from addresses.models import Address
+from catalog.models import Basket, BasketLine, Product
+from orders.forms import FakePaymentForm
+from orders.models import Order, OrderItem, Payment
+
+
+def get_active_basket(user):
+    basket, _ = Basket.objects.get_or_create(user=user, status=Basket.Status.PENDING)
+    return basket
 
 
 @login_required
 def basket_view(request):
-    basket, _ = Basket.objects.get_or_create(user=request.user, status=Basket.PENDING)
-    lines = basket.lines.select_related('product', 'product__price')
-    return render(request, 'orders/basket.html', {'basket': basket, 'lines': lines})
+    basket = get_active_basket(request.user)
+    lines = basket.lines.select_related("product", "product__price")
+    return render(request, "orders/basket.html", {"basket": basket, "lines": lines})
 
 
 @login_required
 def basket_add(request, product_id):
     product = get_object_or_404(Product, pk=product_id, is_active=True)
-    basket, _ = Basket.objects.get_or_create(user=request.user, status=Basket.PENDING)
+    basket = get_active_basket(request.user)
     line, created = BasketLine.objects.get_or_create(basket=basket, product=product)
-    if not created:
+    if not created and line.quantity < product.stock:
         line.quantity += 1
         line.save()
-    next_url = request.GET.get('next')
+    next_url = request.GET.get("next")
     if next_url:
         return redirect(next_url)
-    return redirect('orders:basket')
+    return redirect("orders:basket")
 
 
 @login_required
 def basket_remove(request, product_id):
-    basket = Basket.objects.filter(user=request.user, status=Basket.PENDING).first()
+    basket = Basket.objects.filter(user=request.user, status=Basket.Status.PENDING).first()
     if basket:
         BasketLine.objects.filter(basket=basket, product_id=product_id).delete()
-    return redirect('orders:basket')
+    return redirect("orders:basket")
 
 
 @login_required
 def basket_update(request, product_id):
-    if request.method == 'POST':
-        quantity = int(request.POST.get('quantity', 1))
-        basket = Basket.objects.filter(user=request.user, status=Basket.PENDING).first()
+    if request.method == "POST":
+        try:
+            quantity = int(request.POST.get("quantity", 1))
+        except (TypeError, ValueError):
+            quantity = 1
+        basket = Basket.objects.filter(user=request.user, status=Basket.Status.PENDING).first()
         if basket:
             line = BasketLine.objects.filter(basket=basket, product_id=product_id).first()
             if line:
                 if quantity <= 0:
                     line.delete()
-                else:
+                elif quantity <= line.product.stock:
                     line.quantity = quantity
                     line.save()
-    return redirect('orders:basket')
+    return redirect("orders:basket")
 
 
 @login_required
 def checkout_address(request):
-    basket = Basket.objects.filter(user=request.user, status=Basket.PENDING).first()
+    basket = Basket.objects.filter(user=request.user, status=Basket.Status.PENDING).first()
     if not basket or not basket.lines.exists():
-        return redirect('orders:basket')
+        return redirect("orders:basket")
     addresses = Address.objects.filter(user=request.user)
-    if request.method == 'POST':
-        address_id = request.POST.get('address_id')
+    default_address = addresses.filter(is_default=True).first()
+    if request.method == "POST":
+        address_id = request.POST.get("address_id")
         if address_id:
             address = get_object_or_404(Address, pk=address_id, user=request.user)
             order = Order.objects.create(
                 user=request.user,
-                address=address,
+                receipt_name=address.receipt_name,
+                phone_number=address.phone_number,
+                city=address.city,
+                postal_code=address.postal_code,
+                full_address=address.full_address,
+                address_detail=address.address_detail,
                 total_price=basket.total_price,
             )
-            for line in basket.lines.select_related('product', 'product__price'):
-                OrderLine.objects.create(
+            for line in basket.lines.select_related("product", "product__price"):
+                OrderItem.objects.create(
                     order=order,
                     product=line.product,
                     product_title=line.product.title,
+                    unit_price=line.product.final_price or line.product.price.price,
                     quantity=line.quantity,
-                    price=line.product.price.final_price if hasattr(line.product, 'price') else 0,
                 )
             Payment.objects.create(order=order, amount=order.total_price)
-            basket.status = Basket.EXPIRED
+            basket.status = Basket.Status.EXPIRED
             basket.save()
-            return redirect('orders:payment_gateway', order_id=order.pk)
-    return render(request, 'orders/checkout_address.html', {
-        'addresses': addresses,
-        'basket': basket,
+            return redirect("payments:payment_gateway", order_id=order.pk)
+        else:
+            return redirect("addresses:address_create")
+    return render(request, "orders/checkout_address.html", {
+        "addresses": addresses,
+        "default_address": default_address,
+        "basket": basket,
     })
 
 
 @login_required
 def payment_gateway(request, order_id):
-    order = get_object_or_404(Order, pk=order_id, user=request.user, status=Order.PENDING)
-    return render(request, 'orders/payment_gateway.html', {'order': order})
+    order = get_object_or_404(Order, pk=order_id, user=request.user, status=Order.Status.PENDING)
+    if request.method == "POST":
+        form = FakePaymentForm(request.POST)
+        if form.is_valid():
+            return redirect("payments:payment_callback", order_id=order.pk)
+    else:
+        form = FakePaymentForm()
+    return render(request, "orders/payment_gateway.html", {"order": order, "form": form})
 
 
 @login_required
 def payment_callback(request, order_id):
-    order = get_object_or_404(Order, pk=order_id, user=request.user, status=Order.PENDING)
-    if request.method == 'POST':
-        order.status = Order.PAID
+    order = get_object_or_404(Order, pk=order_id, user=request.user)
+    payment = order.payments.order_by("-created_time").first()
+    if order.status == Order.Status.PENDING and request.method == "POST":
+        order.status = Order.Status.PAID
         order.save()
-        payment = order.payment
-        payment.is_paid = True
-        payment.paid_time = timezone.now()
-        payment.transaction_id = str(uuid.uuid4())[:20]
-        payment.save()
-        for line in order.lines.all():
-            if line.product:
-                line.product.sold_count += line.quantity
-                line.product.stock = max(0, line.product.stock - line.quantity)
-                line.product.save()
-        return redirect('orders:order_detail', pk=order.pk)
-    return redirect('orders:payment_gateway', order_id=order.pk)
+        if payment:
+            payment.status = Payment.Status.SUCCESS
+            payment.save()
+        for item in order.items.select_related("product"):
+            if item.product:
+                item.product.sold_count += item.quantity
+                item.product.stock = max(0, item.product.stock - item.quantity)
+                item.product.save()
+        return redirect("orders:order_detail", pk=order.pk)
+    return redirect("payments:payment_gateway", order_id=order.pk)
 
 
 @login_required
 def order_detail(request, pk):
     order = get_object_or_404(Order, pk=pk, user=request.user)
-    lines = order.lines.all()
-    return render(request, 'orders/order_detail.html', {'order': order, 'lines': lines})
+    items = order.items.select_related("product")
+    return render(request, "orders/order_detail.html", {"order": order, "items": items})
 
 
 @login_required
 def order_list(request):
-    orders = Order.objects.filter(user=request.user).order_by('-created_time')
-    return render(request, 'orders/order_list.html', {'orders': orders})
-
+    orders = Order.objects.filter(user=request.user).order_by("-created_time")
+    return render(request, "orders/order_list.html", {"orders": orders})
