@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}آدرس‌ها - پنل مدیریت{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">مدیریت آدرس‌ها</h2>
+        <table class="orders-table">
+            <thead>
+                <tr><th>کاربر</th><th>گیرنده</th><th>تلفن</th><th>شهر</th><th>آدرس</th><th>پیش‌فرض</th></tr>
+            </thead>
+            <tbody>
+                {% for addr in addresses %}
+                <tr>
+                    <td>{{ addr.user.username }}</td>
+                    <td>{{ addr.receipt_name }}</td>
+                    <td>{{ addr.phone_number }}</td>
+                    <td>{{ addr.city }}</td>
+                    <td>{{ addr.full_address|truncatechars:60 }}</td>
+                    <td>{% if addr.is_default %}✓{% endif %}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6">آدرسی ثبت نشده است</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

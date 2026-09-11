@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load catalog_tags %}
+
+{% block title %}پروفایل من - AirShop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">حساب کاربری: {{ user.username }}</h2>
+        <div class="profile-grid">
+            <div class="order-summary-box">
+                <h3>اطلاعات کاربری</h3>
+                <p><strong>نام کاربری:</strong> {{ user.username }}</p>
+                <p><strong>ایمیل:</strong> {{ user.email|default:"-" }}</p>
+                <p><strong>تاریخ عضویت:</strong> {{ user.date_joined|date:'Y/m/d' }}</p>
+                <a href="{% url 'addresses:address_list' %}" class="btn btn-secondary">مدیریت آدرس‌ها</a>
+            </div>
+            <div class="order-summary-box">
+                <h3>سفارش‌های اخیر</h3>
+                {% for order in orders %}
+                <p>
+                    <a href="{% url 'orders:order_detail' order.pk %}">{{ order.ref_id }}</a> -
+                    {{ order.total_price|toman }} تومان - {{ order.get_status_display }}
+                </p>
+                {% empty %}
+                <p>سفارشی ثبت نشده است</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

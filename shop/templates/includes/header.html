@@ -27,7 +27,7 @@
             {% if user.is_authenticated %}
             <a href="{% url 'orders:basket' %}" class="basket-link">🛒 <span class="badge">{{ basket_count }}</span></a>
             <a href="{% url 'orders:order_list' %}">سفارش‌ها</a>
-            <a href="{% url 'catalog:panel_dashboard' %}">پنل</a>
+            <a href="{% url 'catalog_panel:dashboard' %}">پنل</a>
             <a href="{% url 'accounts:logout' %}">خروج</a>
             {% else %}
             <a href="{% url 'accounts:login' %}">ورود</a>

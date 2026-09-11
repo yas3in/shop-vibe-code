@@ -1,6 +1,8 @@
 from django.urls import path
 
-app_name = 'orders'
+from orders.views import panel
 
-urlpatterns = []
-
+urlpatterns = [
+    path('', panel.order_list, name='order_list'),
+    path('<int:pk>/', panel.order_detail, name='order_detail'),
+]

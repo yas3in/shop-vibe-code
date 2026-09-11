@@ -1,6 +1,9 @@
 from django.urls import path
 
-app_name = 'addresses'
+from addresses.views import panel
 
-urlpatterns = []
+app_name = 'addresses_panel'
 
+urlpatterns = [
+    path('', panel.address_list, name='address_list'),
+]

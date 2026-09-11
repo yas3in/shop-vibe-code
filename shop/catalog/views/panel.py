@@ -29,7 +29,7 @@ def panel_product_create(request):
             images = request.FILES.getlist('gallery')
             for img in images:
                 ProductImage.objects.create(product=product, image=img)
-            return redirect('catalog:panel_product_list')
+            return redirect('catalog_panel:product_list')
     else:
         form = ProductForm()
         price_form = ProductPriceForm()
@@ -55,7 +55,7 @@ def panel_product_edit(request, pk):
             images = request.FILES.getlist('gallery')
             for img in images:
                 ProductImage.objects.create(product=product, image=img)
-            return redirect('catalog:panel_product_list')
+            return redirect('catalog_panel:product_list')
     else:
         form = ProductForm(instance=product)
         price_form = ProductPriceForm(instance=price_obj)
@@ -72,6 +72,6 @@ def panel_product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
         product.delete()
-        return redirect('catalog:panel_product_list')
+        return redirect('catalog_panel:product_list')
     return render(request, 'catalog/panel/product_confirm_delete.html', {'product': product})
 

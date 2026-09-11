@@ -8,7 +8,7 @@
     <div class="container">
         <div class="panel-header">
             <h2 class="section-title">مدیریت محصولات</h2>
-            <a href="{% url 'catalog:panel_product_create' %}" class="btn btn-primary">افزودن محصول جدید</a>
+            <a href="{% url 'catalog_panel:product_create' %}" class="btn btn-primary">افزودن محصول جدید</a>
         </div>
         <table class="orders-table">
             <thead>
@@ -38,8 +38,8 @@
                     <td>{{ p.stock }}</td>
                     <td>{% if p.is_active %}فعال{% else %}غیرفعال{% endif %}</td>
                     <td>
-                        <a href="{% url 'catalog:panel_product_edit' p.pk %}" class="btn btn-sm">ویرایش</a>
-                        <a href="{% url 'catalog:panel_product_delete' p.pk %}" class="btn btn-sm btn-danger">حذف</a>
+                        <a href="{% url 'catalog_panel:product_edit' p.pk %}" class="btn btn-sm">ویرایش</a>
+                        <a href="{% url 'catalog_panel:product_delete' p.pk %}" class="btn btn-sm btn-danger">حذف</a>
                     </td>
                 </tr>
                 {% empty %}
