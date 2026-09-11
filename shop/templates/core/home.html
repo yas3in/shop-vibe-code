@@ -9,7 +9,7 @@
         <div class="banner-content">
             <h1>بهترین ایرپادها را از ما بخرید</h1>
             <p>کیفیت صدای بی‌نظیر با قیمت مناسب</p>
-            <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">مشاهده محصولات</a>
+            <a href="{% url 'product_list' %}" class="btn btn-primary">مشاهده محصولات</a>
         </div>
     </div>
 </section>
@@ -39,7 +39,7 @@
                         <span class="price">{{ product.final_price|toman }} تومان</span>
                     </div>
                     {% endif %}
-                    <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
+                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
                 </div>
             </div>
             {% empty %}
@@ -54,7 +54,7 @@
         <h2 class="section-title">برندها</h2>
         <div class="brands-grid">
             {% for brand in brands %}
-            <a href="{% url 'catalog:product_list' %}?brand={{ brand.pk }}" class="brand-item">
+            <a href="{% url 'product_list' %}?brand={{ brand.pk }}" class="brand-item">
                 {% if brand.logo %}
                 <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
                 {% else %}
@@ -91,7 +91,7 @@
                         <span class="price">{{ product.final_price|toman }} تومان</span>
                     </div>
                     {% endif %}
-                    <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
+                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
                 </div>
             </div>
             {% empty %}

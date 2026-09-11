@@ -32,7 +32,7 @@ def contact(request):
                 message=form.cleaned_data["message"],
             )
             messages.success(request, "پیام شما با موفقیت ارسال شد.")
-            return redirect("core:contact")
+            return redirect("contact")
     else:
         form = ContactForm()
     return render(request, "core/contact.html", {"form": form})

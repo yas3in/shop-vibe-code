@@ -27,12 +27,12 @@
             </div>
             <div class="checkout-actions">
                 <button type="submit" class="btn btn-primary btn-lg">ادامه و پرداخت</button>
-                <a href="{% url 'addresses:address_create' %}?next={% url 'orders:checkout_address' %}" class="btn btn-secondary">افزودن آدرس جدید</a>
+                <a href="{% url 'addresses:address_create' %}?next={% url 'checkout_address' %}" class="btn btn-secondary">افزودن آدرس جدید</a>
             </div>
             {% else %}
             <div class="empty-basket">
                 <p>هنوز آدرسی ثبت نکرده‌اید</p>
-                <a href="{% url 'addresses:address_create' %}?next={% url 'orders:checkout_address' %}" class="btn btn-primary">افزودن آدرس</a>
+                <a href="{% url 'addresses:address_create' %}?next={% url 'checkout_address' %}" class="btn btn-primary">افزودن آدرس</a>
             </div>
             {% endif %}
         </form>

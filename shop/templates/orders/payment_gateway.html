@@ -13,7 +13,7 @@
                     <p>شماره سفارش: {{ order.ref_id }}</p>
                     <p>مبلغ قابل پرداخت: <strong>{{ order.total_price|toman }} تومان</strong></p>
                 </div>
-                <form method="post" action="{% url 'payments:payment_callback' order.pk %}">
+                <form method="post" action="{% url 'payment_callback' order.pk %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <label>شماره کارت</label>

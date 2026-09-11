@@ -8,7 +8,7 @@
     <div class="container product-list-page">
         <div class="sidebar">
             <h3>فیلتر</h3>
-            <form method="get" action="{% url 'catalog:product_list' %}">
+            <form method="get" action="{% url 'product_list' %}">
                 <div class="filter-group">
                     <label>دسته‌بندی</label>
                     <select name="category">
@@ -71,7 +71,7 @@
                             <span class="price">{{ product.final_price|toman }} تومان</span>
                         </div>
                         {% endif %}
-                        <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
+                        <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
                     </div>
                 </div>
                 {% empty %}

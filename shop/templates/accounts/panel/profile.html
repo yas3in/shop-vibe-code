@@ -19,7 +19,7 @@
                 <h3>سفارش‌های اخیر</h3>
                 {% for order in orders %}
                 <p>
-                    <a href="{% url 'orders:order_detail' order.pk %}">{{ order.ref_id }}</a> -
+                    <a href="{% url 'order_detail' order.pk %}">{{ order.ref_id }}</a> -
                     {{ order.total_price|toman }} تومان - {{ order.get_status_display }}
                 </p>
                 {% empty %}

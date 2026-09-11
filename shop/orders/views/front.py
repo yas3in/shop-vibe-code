@@ -30,7 +30,7 @@ def basket_add(request, product_id):
     next_url = request.GET.get("next")
     if next_url:
         return redirect(next_url)
-    return redirect("orders:basket")
+    return redirect("basket")
 
 
 @login_required
@@ -38,7 +38,7 @@ def basket_remove(request, product_id):
     basket = Basket.objects.filter(user=request.user, status=Basket.Status.PENDING).first()
     if basket:
         BasketLine.objects.filter(basket=basket, product_id=product_id).delete()
-    return redirect("orders:basket")
+    return redirect("basket")
 
 
 @login_required
@@ -57,14 +57,14 @@ def basket_update(request, product_id):
                 elif quantity <= line.product.stock:
                     line.quantity = quantity
                     line.save()
-    return redirect("orders:basket")
+    return redirect("basket")
 
 
 @login_required
 def checkout_address(request):
     basket = Basket.objects.filter(user=request.user, status=Basket.Status.PENDING).first()
     if not basket or not basket.lines.exists():
-        return redirect("orders:basket")
+        return redirect("basket")
     addresses = Address.objects.filter(user=request.user)
     default_address = addresses.filter(is_default=True).first()
     if request.method == "POST":
@@ -92,7 +92,7 @@ def checkout_address(request):
             Payment.objects.create(order=order, amount=order.total_price)
             basket.status = Basket.Status.EXPIRED
             basket.save()
-            return redirect("payments:payment_gateway", order_id=order.pk)
+            return redirect("payment_gateway", order_id=order.pk)
         else:
             return redirect("addresses:address_create")
     return render(request, "orders/checkout_address.html", {
@@ -108,7 +108,7 @@ def payment_gateway(request, order_id):
     if request.method == "POST":
         form = FakePaymentForm(request.POST)
         if form.is_valid():
-            return redirect("payments:payment_callback", order_id=order.pk)
+            return redirect("payment_callback", order_id=order.pk)
     else:
         form = FakePaymentForm()
     return render(request, "orders/payment_gateway.html", {"order": order, "form": form})
@@ -129,8 +129,8 @@ def payment_callback(request, order_id):
                 item.product.sold_count += item.quantity
                 item.product.stock = max(0, item.product.stock - item.quantity)
                 item.product.save()
-        return redirect("orders:order_detail", pk=order.pk)
-    return redirect("payments:payment_gateway", order_id=order.pk)
+        return redirect("order_detail", pk=order.pk)
+    return redirect("payment_gateway", order_id=order.pk)
 
 
 @login_required
