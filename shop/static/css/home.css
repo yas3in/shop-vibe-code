@@ -260,8 +260,10 @@
 }
 
 .service-icon {
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 34px;
+    margin-bottom: 12px;
+    color: var(--secondary-color);
+    display: inline-block;
 }
 
 .service-card h3 {
