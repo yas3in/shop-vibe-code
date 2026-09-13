@@ -1,22 +1,51 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const navbar = document.querySelector('.navbar');
-    if (navbar && !navbar.querySelector('.nav-toggle')) {
-        const toggle = document.createElement('button');
-        toggle.className = 'nav-toggle';
-        toggle.type = 'button';
-        toggle.textContent = '☰';
-        navbar.prepend(toggle);
-        toggle.addEventListener('click', function () {
-            navbar.classList.toggle('nav-open');
-        });
-    }
-
-    document.querySelectorAll('.dropdown > a').forEach(function (link) {
-        link.addEventListener('click', function (e) {
-            if (window.innerWidth <= 768) {
-                e.preventDefault();
-                link.parentElement.classList.toggle('open');
+    if (typeof Swiper !== 'undefined') {
+        new Swiper('.bestsellers-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            navigation: {
+                nextEl: '.bestsellers-next',
+                prevEl: '.bestsellers-prev',
+            },
+            pagination: {
+                el: '.bestsellers-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                576: { slidesPerView: 2, spaceBetween: 15 },
+                768: { slidesPerView: 3, spaceBetween: 20 },
+                1024: { slidesPerView: 4, spaceBetween: 20 },
             }
         });
-    });
+
+        new Swiper('.discounted-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            navigation: {
+                nextEl: '.discounted-next',
+                prevEl: '.discounted-prev',
+            },
+            pagination: {
+                el: '.discounted-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                576: { slidesPerView: 2, spaceBetween: 15 },
+                768: { slidesPerView: 3, spaceBetween: 20 },
+                1024: { slidesPerView: 4, spaceBetween: 20 },
+            }
+        });
+    }
 });

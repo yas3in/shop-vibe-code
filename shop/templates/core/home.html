@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load catalog_tags %}
 
 {% block title %}AirShop - فروشگاه ایرپاد{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 
 {% block content %}
 <section class="banner">
     <div class="container">
         <div class="banner-content">
-            <h1>بهترین ایرپادها را از ما بخرید</h1>
-            <p>کیفیت صدای بی‌نظیر با قیمت مناسب</p>
-            <a href="{% url 'product_list' %}" class="btn btn-primary">مشاهده محصولات</a>
+            <a href="{% url 'product_list' %}">
+                <img src="{% static 'images/ChatGPT Image Sep 13, 2026, 07_44_36 PM.png' %}" alt="بنر AirShop" class="banner-image">
+            </a>
         </div>
     </div>
 </section>
@@ -17,34 +23,41 @@
 <section class="section">
     <div class="container">
         <h2 class="section-title">محصولات پرفروش</h2>
-        <div class="product-grid">
-            {% for product in top_selling %}
-            <div class="product-card">
-                {% if product.base_image %}
-                <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
-                {% else %}
-                <div class="no-image">بدون تصویر</div>
-                {% endif %}
-                {% if product.discount_percent > 0 %}
-                <span class="discount-badge">{{ product.discount_percent }}%</span>
-                {% endif %}
-                <div class="product-info">
-                    <h3>{{ product.title }}</h3>
-                    <p class="brand">{{ product.brand.name }}</p>
-                    {% if product.final_price %}
-                    <div class="price-box">
-                        {% if product.discount_percent > 0 %}
-                        <span class="old-price">{{ product.price.price|toman }} تومان</span>
+        <div class="swiper bestsellers-swiper product-swiper">
+            <div class="swiper-wrapper">
+                {% for product in top_selling %}
+                <div class="swiper-slide">
+                    <div class="product-card">
+                        {% if product.base_image %}
+                        <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
+                        {% else %}
+                        <div class="no-image">بدون تصویر</div>
                         {% endif %}
-                        <span class="price">{{ product.final_price|toman }} تومان</span>
+                        {% if product.discount_percent > 0 %}
+                        <span class="discount-badge">{{ product.discount_percent }}%</span>
+                        {% endif %}
+                        <div class="product-info">
+                            <h3>{{ product.title }}</h3>
+                            <p class="brand">{{ product.brand.name }}</p>
+                            {% if product.final_price %}
+                            <div class="price-box">
+                                {% if product.discount_percent > 0 %}
+                                <span class="old-price">{{ product.price.price|toman }} تومان</span>
+                                {% endif %}
+                                <span class="price">{{ product.final_price|toman }} تومان</span>
+                            </div>
+                            {% endif %}
+                            <a href="{% url 'product_detail' product.pk %}" class="btn-card">مشاهده</a>
+                        </div>
                     </div>
-                    {% endif %}
-                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
                 </div>
+                {% empty %}
+                <p class="text-center py-4">محصولی یافت نشد</p>
+                {% endfor %}
             </div>
-            {% empty %}
-            <p class="empty-msg">محصولی یافت نشد</p>
-            {% endfor %}
+            <div class="swiper-button-next bestsellers-next"></div>
+            <div class="swiper-button-prev bestsellers-prev"></div>
+            <div class="swiper-pagination bestsellers-pagination"></div>
         </div>
     </div>
 </section>
@@ -69,34 +82,41 @@
 <section class="section">
     <div class="container">
         <h2 class="section-title">بیشترین تخفیف</h2>
-        <div class="product-grid">
-            {% for product in most_discounted %}
-            <div class="product-card">
-                {% if product.base_image %}
-                <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
-                {% else %}
-                <div class="no-image">بدون تصویر</div>
-                {% endif %}
-                {% if product.discount_percent > 0 %}
-                <span class="discount-badge">{{ product.discount_percent }}%</span>
-                {% endif %}
-                <div class="product-info">
-                    <h3>{{ product.title }}</h3>
-                    <p class="brand">{{ product.brand.name }}</p>
-                    {% if product.final_price %}
-                    <div class="price-box">
-                        {% if product.discount_percent > 0 %}
-                        <span class="old-price">{{ product.price.price|toman }} تومان</span>
+        <div class="swiper discounted-swiper product-swiper">
+            <div class="swiper-wrapper">
+                {% for product in most_discounted %}
+                <div class="swiper-slide">
+                    <div class="product-card">
+                        {% if product.base_image %}
+                        <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
+                        {% else %}
+                        <div class="no-image">بدون تصویر</div>
                         {% endif %}
-                        <span class="price">{{ product.final_price|toman }} تومان</span>
+                        {% if product.discount_percent > 0 %}
+                        <span class="discount-badge">{{ product.discount_percent }}%</span>
+                        {% endif %}
+                        <div class="product-info">
+                            <h3>{{ product.title }}</h3>
+                            <p class="brand">{{ product.brand.name }}</p>
+                            {% if product.final_price %}
+                            <div class="price-box">
+                                {% if product.discount_percent > 0 %}
+                                <span class="old-price">{{ product.price.price|toman }} تومان</span>
+                                {% endif %}
+                                <span class="price">{{ product.final_price|toman }} تومان</span>
+                            </div>
+                            {% endif %}
+                            <a href="{% url 'product_detail' product.pk %}" class="btn-card">مشاهده</a>
+                        </div>
                     </div>
-                    {% endif %}
-                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
                 </div>
+                {% empty %}
+                <p class="text-center py-4">محصولی یافت نشد</p>
+                {% endfor %}
             </div>
-            {% empty %}
-            <p class="empty-msg">محصولی یافت نشد</p>
-            {% endfor %}
+            <div class="swiper-button-next discounted-next"></div>
+            <div class="swiper-button-prev discounted-prev"></div>
+            <div class="swiper-pagination discounted-pagination"></div>
         </div>
     </div>
 </section>
@@ -137,3 +157,7 @@
 </section>
 {% endblock %}
 
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

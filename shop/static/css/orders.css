@@ -1,0 +1,112 @@
+/* Basket Table */
+.basket-table,
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(94, 49, 34, 0.2);
+    border: 1px solid rgba(249, 210, 186, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.basket-table th,
+.basket-table td,
+.orders-table th,
+.orders-table td {
+    padding: 12px 14px;
+    text-align: right;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(249, 210, 186, 0.1);
+}
+
+.basket-table th,
+.orders-table th {
+    background: rgba(94, 49, 34, 0.35);
+    color: var(--secondary-color);
+}
+
+.quantity-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qty-btn {
+    background: var(--primary-color);
+    color: var(--light-color);
+    border: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.basket-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(94, 49, 34, 0.2);
+    border-radius: 10px;
+}
+
+/* Address List */
+.address-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(94, 49, 34, 0.2);
+    border: 1px solid rgba(249, 210, 186, 0.15);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+/* Payment Gateway */
+.gateway-box {
+    max-width: 440px;
+    margin: 0 auto;
+    background: rgba(94, 49, 34, 0.2);
+    border: 1px solid rgba(249, 210, 186, 0.15);
+    border-radius: 14px;
+    padding: 25px;
+}
+
+.gateway-box .form-group {
+    margin-bottom: 14px;
+}
+
+.gateway-box input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(249, 210, 186, 0.25);
+    background: rgba(29, 69, 51, 0.7);
+    color: var(--light-color);
+}
+
+/* Order Detail */
+.order-detail-box {
+    background: rgba(94, 49, 34, 0.2);
+    border: 1px solid rgba(249, 210, 186, 0.15);
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.status-badge {
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.status-badge.paid {
+    background: rgba(39, 174, 96, 0.25);
+    color: #2ecc71;
+}
+
+.status-badge.pending {
+    background: rgba(241, 196, 15, 0.25);
+    color: #f1c40f;
+}

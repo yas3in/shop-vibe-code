@@ -1,0 +1,218 @@
+:root {
+    --bg-color: #1D4533;
+    --primary-color: #5E3122;
+    --secondary-color: #F9D2BA;
+    --light-color: #F7EAE0;
+    --max-width: 1300px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--light-color);
+    font-family: Tahoma, Arial, sans-serif;
+    direction: rtl;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--light-color);
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.section {
+    padding: 40px 0;
+}
+
+.section-title {
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+/* Header & Glassmorphism Navbar */
+.header {
+    position: sticky;
+    top: 15px;
+    z-index: 1000;
+    padding: 0 15px;
+}
+
+.air-navbar {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 10px 25px;
+    background: rgba(94, 49, 34, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(249, 210, 186, 0.2);
+    border-radius: 50px;
+}
+
+.air-navbar .logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--secondary-color) !important;
+}
+
+.nav-center-links .nav-link {
+    color: var(--light-color) !important;
+    font-size: 15px;
+    padding: 8px 16px !important;
+}
+
+.nav-center-links .nav-link:hover {
+    color: var(--secondary-color) !important;
+}
+
+.dropdown-menu {
+    background: rgba(29, 69, 51, 0.95);
+    border: 1px solid rgba(249, 210, 186, 0.2);
+    border-radius: 12px;
+    text-align: right;
+}
+
+.dropdown-item {
+    color: var(--light-color);
+    font-size: 14px;
+    padding: 8px 16px;
+}
+
+.dropdown-item:hover {
+    background: rgba(249, 210, 186, 0.15);
+    color: var(--secondary-color);
+}
+
+.btn-nav-basket {
+    background: rgba(249, 210, 186, 0.15);
+    color: var(--light-color) !important;
+    border: 1px solid rgba(249, 210, 186, 0.3);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-nav-basket:hover {
+    background: rgba(249, 210, 186, 0.25);
+    color: var(--secondary-color) !important;
+}
+
+.btn-nav-panel {
+    background: var(--primary-color);
+    color: var(--light-color) !important;
+    border: 1px solid rgba(249, 210, 186, 0.3);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.btn-nav-panel:hover {
+    background: #753d2b;
+}
+
+.badge {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 10px;
+}
+
+.navbar-toggler {
+    border-color: rgba(249, 210, 186, 0.3);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23F9D2BA' stroke-width='3' stroke-linecap='round' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+/* Shared Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--light-color);
+}
+
+.btn-primary:hover {
+    background-color: #753d2b;
+    border-color: #753d2b;
+}
+
+/* Footer */
+.footer {
+    background: rgba(94, 49, 34, 0.25);
+    border-top: 1px solid rgba(249, 210, 186, 0.1);
+    padding: 40px 0 20px;
+    margin-top: 50px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.footer-col h3 {
+    color: var(--secondary-color);
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.footer-col p,
+.footer-col a {
+    color: var(--light-color);
+    font-size: 13px;
+    margin-bottom: 6px;
+    display: block;
+    opacity: 0.85;
+}
+
+.footer-col a:hover {
+    color: var(--secondary-color);
+    opacity: 1;
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid rgba(249, 210, 186, 0.1);
+    padding-top: 15px;
+    font-size: 12px;
+    color: var(--secondary-color);
+}
+
+@media (max-width: 991px) {
+    .air-navbar {
+        border-radius: 20px;
+        padding: 8px 16px;
+    }
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,177 @@
+/* Product List Layout */
+.product-list-page {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 25px;
+    align-items: start;
+}
+
+.sidebar {
+    background: rgba(94, 49, 34, 0.2);
+    border: 1px solid rgba(249, 210, 186, 0.15);
+    border-radius: 14px;
+    padding: 20px;
+    position: sticky;
+    top: 85px;
+}
+
+.sidebar h3 {
+    color: var(--secondary-color);
+    font-size: 17px;
+    margin-bottom: 15px;
+}
+
+.filter-group {
+    margin-bottom: 15px;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 13px;
+    color: var(--light-color);
+    margin-bottom: 5px;
+}
+
+.filter-group select,
+.filter-group input[type="number"] {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(249, 210, 186, 0.25);
+    background: rgba(29, 69, 51, 0.7);
+    color: var(--light-color);
+    font-size: 13px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 30px;
+}
+
+.pagination a {
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: rgba(94, 49, 34, 0.25);
+    border: 1px solid rgba(249, 210, 186, 0.15);
+    color: var(--light-color);
+    font-size: 13px;
+}
+
+.pagination a:hover,
+.pagination a.active {
+    background: var(--primary-color);
+    color: var(--light-color);
+}
+
+/* Product Detail */
+.product-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+    align-items: start;
+}
+
+.product-gallery .main-image {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 10px;
+}
+
+.gallery-thumbs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.gallery-thumbs img {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.gallery-thumbs img:hover {
+    border-color: var(--secondary-color);
+}
+
+.product-detail-info h1 {
+    font-size: 24px;
+    color: var(--light-color);
+    margin-bottom: 10px;
+}
+
+.brand-name,
+.category-name {
+    font-size: 13px;
+    color: var(--secondary-color);
+    margin-bottom: 4px;
+}
+
+.stock {
+    font-size: 13px;
+    margin: 12px 0;
+    color: var(--secondary-color);
+}
+
+.description {
+    margin: 20px 0;
+}
+
+.description h3 {
+    color: var(--secondary-color);
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+.description p {
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.attributes table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.attributes td {
+    padding: 7px 10px;
+    border-bottom: 1px solid rgba(249, 210, 186, 0.1);
+    font-size: 13px;
+}
+
+.attributes tr td:first-child {
+    color: var(--secondary-color);
+    width: 40%;
+}
+
+@media (max-width: 991px) {
+    .product-list-page {
+        grid-template-columns: 1fr;
+    }
+    .sidebar {
+        position: static;
+    }
+    .product-detail {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}

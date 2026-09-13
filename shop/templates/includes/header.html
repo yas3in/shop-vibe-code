@@ -1,39 +1,80 @@
 <header class="header">
-    <nav class="navbar">
-        <div class="nav-right">
+    <nav class="navbar navbar-expand-lg air-navbar">
+        <div class="container-fluid p-0 d-flex align-items-center justify-content-between">
             <a href="{% url 'home' %}" class="logo">AirShop</a>
-        </div>
-        <div class="nav-links">
-            <div class="dropdown">
-                <a href="#">دسته‌بندی ▾</a>
-                <div class="dropdown-content">
-                    {% for cat in all_categories %}
-                    <a href="{% url 'product_list' %}?category={{ cat.pk }}">{{ cat.name }}</a>
-                    {% endfor %}
+
+            <div class="d-flex align-items-center gap-2 d-lg-none">
+                <a href="{% url 'basket' %}" class="btn-nav-basket position-relative">
+                    🛒 <span class="badge">{{ basket_count }}</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="منو">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse justify-content-center" id="mainNavbar">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 nav-center-links">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            دسته‌بندی
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for cat in all_categories %}
+                            <li><a class="dropdown-item" href="{% url 'product_list' %}?category={{ cat.pk }}">{{ cat.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            برندها
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for brand in all_brands %}
+                            <li><a class="dropdown-item" href="{% url 'product_list' %}?brand={{ brand.pk }}">{{ brand.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'product_list' %}">محصولات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">تماس با ما</a>
+                    </li>
+                </ul>
+
+                <div class="d-lg-none mobile-auth-section border-top pt-3 mt-2">
+                    {% if user.is_authenticated %}
+                    <a class="dropdown-item py-2" href="{% url 'catalog_panel:dashboard' %}">👤 پنل کاربری</a>
+                    <a class="dropdown-item py-2" href="{% url 'order_list' %}">📦 دیدن سفارشات</a>
+                    <a class="dropdown-item py-2 text-danger" href="{% url 'logout' %}">🚪 خروج از حساب</a>
+                    {% else %}
+                    <a class="dropdown-item py-2" href="{% url 'login' %}">ورود</a>
+                    <a class="dropdown-item py-2" href="{% url 'register' %}">ثبت‌نام</a>
+                    {% endif %}
                 </div>
             </div>
-            <div class="dropdown">
-                <a href="#">برندها ▾</a>
-                <div class="dropdown-content">
-                    {% for brand in all_brands %}
-                    <a href="{% url 'product_list' %}?brand={{ brand.pk }}">{{ brand.name }}</a>
-                    {% endfor %}
+
+            <div class="nav-left-actions d-none d-lg-flex align-items-center gap-3">
+                <a href="{% url 'basket' %}" class="btn-nav-basket">
+                    🛒 سبد خرید <span class="badge">{{ basket_count }}</span>
+                </a>
+
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="btn btn-nav-panel dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        👤 پنل
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-start">
+                        <li><a class="dropdown-item" href="{% url 'catalog_panel:dashboard' %}">پنل کاربری</a></li>
+                        <li><a class="dropdown-item" href="{% url 'order_list' %}">دیدن سفارشات</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">خروج از حساب</a></li>
+                    </ul>
                 </div>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-nav-panel">ورود / ثبت‌نام</a>
+                {% endif %}
             </div>
-            <a href="{% url 'product_list' %}">محصولات</a>
-            <a href="{% url 'contact' %}">تماس با ما</a>
-        </div>
-        <div class="nav-left">
-            {% if user.is_authenticated %}
-            <a href="{% url 'basket' %}" class="basket-link">🛒 <span class="badge">{{ basket_count }}</span></a>
-            <a href="{% url 'order_list' %}">سفارش‌ها</a>
-            <a href="{% url 'catalog_panel:dashboard' %}">پنل</a>
-            <a href="{% url 'logout' %}">خروج</a>
-            {% else %}
-            <a href="{% url 'login' %}">ورود</a>
-            <a href="{% url 'register' %}">ثبت‌نام</a>
-            {% endif %}
         </div>
     </nav>
 </header>
-
