@@ -57,18 +57,23 @@
 }
 
 .pagination a {
-    padding: 6px 12px;
-    border-radius: 6px;
-    background: rgba(94, 49, 34, 0.25);
-    border: 1px solid rgba(249, 210, 186, 0.15);
+    padding: 7px 14px;
+    border-radius: 8px;
+    background: #254d39;
+    border: 1px solid #35674e;
     color: var(--light-color);
     font-size: 13px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
 }
 
 .pagination a:hover,
 .pagination a.active {
     background: var(--primary-color);
-    color: var(--light-color);
+    border-color: #783f2c;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .product-detail {

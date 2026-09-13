@@ -71,7 +71,7 @@
                             <span class="price">{{ product.final_price|toman }} تومان</span>
                         </div>
                         {% endif %}
-                        <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
+                        <a href="{% url 'product_detail' product.pk %}" class="btn-card">مشاهده</a>
                     </div>
                 </div>
                 {% empty %}

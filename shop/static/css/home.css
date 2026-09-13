@@ -110,28 +110,47 @@
 .btn-card {
     background: var(--primary-color);
     color: var(--light-color);
-    border: none;
-    padding: 6px 14px;
+    border: 1px solid #783f2c;
+    padding: 8px 16px;
     border-radius: 8px;
     font-size: 13px;
+    font-weight: 500;
     text-align: center;
     display: block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    transition: all 0.2s ease-in-out;
 }
 
 .btn-card:hover {
-    background: #753d2b;
-    color: var(--light-color);
+    background: #723c2a;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+
+.btn-card:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* Swiper Controls Customization */
 .swiper-button-next,
 .swiper-button-prev {
     color: var(--secondary-color) !important;
-    background: rgba(29, 69, 51, 0.85);
-    width: 36px !important;
-    height: 36px !important;
+    background: var(--primary-color) !important;
+    width: 38px !important;
+    height: 38px !important;
     border-radius: 50%;
-    border: 1px solid rgba(249, 210, 186, 0.3);
+    border: 1px solid #783f2c !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
+    transition: all 0.2s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background: #723c2a !important;
+    transform: scale(1.08);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5) !important;
 }
 
 .swiper-button-next::after,
