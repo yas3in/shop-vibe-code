@@ -14,14 +14,17 @@
         <div class="product-detail">
             <div class="product-gallery">
                 {% if product.base_image %}
-                <img src="{{ product.base_image.url }}" alt="{{ product.title }}" class="main-image">
+                <img src="{{ product.base_image.url }}" alt="{{ product.title }}" class="main-image" id="mainProductImage">
                 {% else %}
-                <div class="no-image large">بدون تصویر</div>
+                <div class="no-image large" id="mainProductImage">بدون تصویر</div>
                 {% endif %}
                 {% if images %}
                 <div class="gallery-thumbs">
+                    {% if product.base_image %}
+                    <img src="{{ product.base_image.url }}" alt="{{ product.title }}" class="thumb-item active">
+                    {% endif %}
                     {% for img in images %}
-                    <img src="{{ img.image.url }}" alt="{{ product.title }}">
+                    <img src="{{ img.image.url }}" alt="{{ product.title }}" class="thumb-item">
                     {% endfor %}
                 </div>
                 {% endif %}

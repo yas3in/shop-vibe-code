@@ -1,4 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Product Detail Image Gallery Switcher
+    const mainProductImg = document.getElementById('mainProductImage');
+    const galleryThumbs = document.querySelectorAll('.gallery-thumbs .thumb-item');
+
+    if (mainProductImg && galleryThumbs.length > 0) {
+        galleryThumbs.forEach(function (thumb) {
+            thumb.addEventListener('click', function () {
+                if (mainProductImg.tagName.toLowerCase() === 'img') {
+                    mainProductImg.src = this.src;
+                }
+                galleryThumbs.forEach(function (t) {
+                    t.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    }
+
+    // Swiper Sliders
     if (typeof Swiper !== 'undefined') {
         const createSwiper = (selector, nextBtn, prevBtn, pagEl, delay) => {
             if (document.querySelector(selector)) {

@@ -99,10 +99,14 @@
     border-radius: 8px;
     border: 2px solid transparent;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.gallery-thumbs img:hover {
+.gallery-thumbs img:hover,
+.gallery-thumbs img.active {
     border-color: var(--secondary-color);
+    box-shadow: 0 0 10px rgba(249, 210, 186, 0.4);
+    transform: scale(1.05);
 }
 
 .product-detail-info h1 {
