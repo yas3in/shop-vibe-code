@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load catalog_tags %}
 
 {% block title %}{{ product.title }} - AirShop{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+{% endblock %}
 
 {% block content %}
 <section class="section">
@@ -66,35 +71,46 @@
 <section class="section">
     <div class="container">
         <h2 class="section-title">محصولات مرتبط</h2>
-        <div class="product-grid">
-            {% for product in related_products %}
-            <div class="product-card">
-                {% if product.base_image %}
-                <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
-                {% else %}
-                <div class="no-image">بدون تصویر</div>
-                {% endif %}
-                {% if product.discount_percent > 0 %}
-                <span class="discount-badge">{{ product.discount_percent }}%</span>
-                {% endif %}
-                <div class="product-info">
-                    <h3>{{ product.title }}</h3>
-                    <p class="brand">{{ product.brand.name }}</p>
-                    {% if product.final_price %}
-                    <div class="price-box">
-                        {% if product.discount_percent > 0 %}
-                        <span class="old-price">{{ product.price.price|toman }} تومان</span>
+        <div class="swiper related-swiper product-swiper">
+            <div class="swiper-wrapper">
+                {% for product in related_products %}
+                <div class="swiper-slide">
+                    <div class="product-card">
+                        {% if product.base_image %}
+                        <img src="{{ product.base_image.url }}" alt="{{ product.title }}">
+                        {% else %}
+                        <div class="no-image">بدون تصویر</div>
                         {% endif %}
-                        <span class="price">{{ product.final_price|toman }} تومان</span>
+                        {% if product.discount_percent > 0 %}
+                        <span class="discount-badge">{{ product.discount_percent }}%</span>
+                        {% endif %}
+                        <div class="product-info">
+                            <h3>{{ product.title }}</h3>
+                            <p class="brand">{{ product.brand.name }}</p>
+                            {% if product.final_price %}
+                            <div class="price-box">
+                                {% if product.discount_percent > 0 %}
+                                <span class="old-price">{{ product.price.price|toman }} تومان</span>
+                                {% endif %}
+                                <span class="price">{{ product.final_price|toman }} تومان</span>
+                            </div>
+                            {% endif %}
+                            <a href="{% url 'product_detail' product.pk %}" class="btn-card">مشاهده</a>
+                        </div>
                     </div>
-                    {% endif %}
-                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm">مشاهده</a>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <div class="swiper-button-next related-next"></div>
+            <div class="swiper-button-prev related-prev"></div>
+            <div class="swiper-pagination related-pagination"></div>
         </div>
     </div>
 </section>
 {% endif %}
 {% endblock %}
 
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

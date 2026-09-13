@@ -1,51 +1,35 @@
 document.addEventListener('DOMContentLoaded', function () {
     if (typeof Swiper !== 'undefined') {
-        new Swiper('.bestsellers-swiper', {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-            },
-            navigation: {
-                nextEl: '.bestsellers-next',
-                prevEl: '.bestsellers-prev',
-            },
-            pagination: {
-                el: '.bestsellers-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                576: { slidesPerView: 2, spaceBetween: 15 },
-                768: { slidesPerView: 3, spaceBetween: 20 },
-                1024: { slidesPerView: 4, spaceBetween: 20 },
+        const createSwiper = (selector, nextBtn, prevBtn, pagEl, delay) => {
+            if (document.querySelector(selector)) {
+                new Swiper(selector, {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    loop: true,
+                    autoplay: {
+                        delay: delay || 3000,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true,
+                    },
+                    navigation: {
+                        nextEl: nextBtn,
+                        prevEl: prevBtn,
+                    },
+                    pagination: {
+                        el: pagEl,
+                        clickable: true,
+                    },
+                    breakpoints: {
+                        576: { slidesPerView: 2, spaceBetween: 15 },
+                        768: { slidesPerView: 3, spaceBetween: 20 },
+                        1024: { slidesPerView: 4, spaceBetween: 20 },
+                    }
+                });
             }
-        });
+        };
 
-        new Swiper('.discounted-swiper', {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            loop: true,
-            autoplay: {
-                delay: 3500,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-            },
-            navigation: {
-                nextEl: '.discounted-next',
-                prevEl: '.discounted-prev',
-            },
-            pagination: {
-                el: '.discounted-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                576: { slidesPerView: 2, spaceBetween: 15 },
-                768: { slidesPerView: 3, spaceBetween: 20 },
-                1024: { slidesPerView: 4, spaceBetween: 20 },
-            }
-        });
+        createSwiper('.bestsellers-swiper', '.bestsellers-next', '.bestsellers-prev', '.bestsellers-pagination', 3000);
+        createSwiper('.discounted-swiper', '.discounted-next', '.discounted-prev', '.discounted-pagination', 3500);
+        createSwiper('.related-swiper', '.related-next', '.related-prev', '.related-pagination', 3200);
     }
 });
