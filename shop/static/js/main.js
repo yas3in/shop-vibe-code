@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const createSwiper = (selector, nextBtn, prevBtn, pagEl, delay) => {
             if (document.querySelector(selector)) {
                 new Swiper(selector, {
-                    slidesPerView: 1,
-                    spaceBetween: 20,
+                    slidesPerView: 2,
+                    spaceBetween: 12,
                     loop: true,
                     autoplay: {
                         delay: delay || 3000,
@@ -39,8 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         clickable: true,
                     },
                     breakpoints: {
-                        576: { slidesPerView: 2, spaceBetween: 15 },
-                        768: { slidesPerView: 3, spaceBetween: 20 },
+                        768: { slidesPerView: 3, spaceBetween: 15 },
                         1024: { slidesPerView: 4, spaceBetween: 20 },
                     }
                 });

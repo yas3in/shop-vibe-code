@@ -281,6 +281,71 @@
     }
 }
 
+@media (max-width: 767px) {
+    .banner {
+        padding: 15px 0;
+    }
+    .banner .container {
+        padding: 0 20px !important;
+    }
+    .banner-image {
+        min-height: 180px;
+        height: 190px;
+        object-fit: cover;
+    }
+    .product-swiper {
+        padding: 10px 0 35px !important;
+    }
+    .product-card {
+        border-radius: 12px;
+    }
+    .product-card img,
+    .product-card .no-image {
+        height: 125px;
+    }
+    .product-info {
+        padding: 10px 8px;
+    }
+    .product-info h3 {
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+    .product-info .brand {
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+    .price-box {
+        margin-bottom: 8px;
+    }
+    .price {
+        font-size: 12px;
+    }
+    .old-price {
+        font-size: 10px;
+    }
+    .discount-badge {
+        font-size: 10px;
+        padding: 1px 5px;
+        top: 6px;
+        left: 6px;
+        border-radius: 6px;
+    }
+    .btn-card {
+        padding: 5px 8px;
+        font-size: 11px;
+        border-radius: 6px;
+    }
+    .swiper-button-next,
+    .swiper-button-prev {
+        width: 28px !important;
+        height: 28px !important;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 11px !important;
+    }
+}
+
 @media (max-width: 576px) {
     .services-grid {
         grid-template-columns: 1fr;

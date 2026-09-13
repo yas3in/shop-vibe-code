@@ -177,9 +177,39 @@
     }
 }
 
+@media (max-width: 767px) {
+    .product-card {
+        border-radius: 12px;
+    }
+    .product-card img,
+    .product-card .no-image {
+        height: 125px;
+    }
+    .product-info {
+        padding: 10px 8px;
+    }
+    .product-info h3 {
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+    .product-info .brand {
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+    .price {
+        font-size: 12px;
+    }
+    .btn-card {
+        padding: 5px 8px;
+        font-size: 11px;
+        border-radius: 6px;
+    }
+}
+
 @media (max-width: 576px) {
     .product-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
 }
 
