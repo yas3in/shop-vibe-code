@@ -50,4 +50,28 @@ document.addEventListener('DOMContentLoaded', function () {
         createSwiper('.discounted-swiper', '.discounted-next', '.discounted-prev', '.discounted-pagination', 3500);
         createSwiper('.related-swiper', '.related-next', '.related-prev', '.related-pagination', 3200);
     }
+
+    // Hover Dropdowns (Desktop)
+    // باز شدن منوهای کشویی نوار بالا با هاور موس در دسکتاپ
+    if (typeof bootstrap !== 'undefined') {
+        document.querySelectorAll('.header .dropdown').forEach(function (dropdown) {
+            const toggle = dropdown.querySelector('[data-bs-toggle="dropdown"]');
+            if (!toggle) return;
+
+            dropdown.addEventListener('mouseenter', function () {
+                if (window.innerWidth >= 992) {
+                    bootstrap.Dropdown.getOrCreateInstance(toggle).show();
+                }
+            });
+
+            dropdown.addEventListener('mouseleave', function () {
+                if (window.innerWidth >= 992) {
+                    const instance = bootstrap.Dropdown.getInstance(toggle);
+                    if (instance && dropdown.querySelector('.dropdown-menu.show')) {
+                        instance.hide();
+                    }
+                }
+            });
+        });
+    }
 });
