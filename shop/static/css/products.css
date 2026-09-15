@@ -183,7 +183,8 @@
     }
     .product-card img,
     .product-card .no-image {
-        height: 125px;
+        height: 150px;
+        padding: 8px;
     }
     .product-info {
         padding: 10px 8px;
